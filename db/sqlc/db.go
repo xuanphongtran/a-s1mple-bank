@@ -45,8 +45,8 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.getTransferStmt, err = db.PrepareContext(ctx, getTransfer); err != nil {
 		return nil, fmt.Errorf("error preparing query GetTransfer: %w", err)
 	}
-	if q.listAccountStmt, err = db.PrepareContext(ctx, listAccount); err != nil {
-		return nil, fmt.Errorf("error preparing query ListAccount: %w", err)
+	if q.listAccountsStmt, err = db.PrepareContext(ctx, listAccounts); err != nil {
+		return nil, fmt.Errorf("error preparing query ListAccounts: %w", err)
 	}
 	if q.listEntriesStmt, err = db.PrepareContext(ctx, listEntries); err != nil {
 		return nil, fmt.Errorf("error preparing query ListEntries: %w", err)
@@ -97,9 +97,9 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing getTransferStmt: %w", cerr)
 		}
 	}
-	if q.listAccountStmt != nil {
-		if cerr := q.listAccountStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing listAccountStmt: %w", cerr)
+	if q.listAccountsStmt != nil {
+		if cerr := q.listAccountsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing listAccountsStmt: %w", cerr)
 		}
 	}
 	if q.listEntriesStmt != nil {
@@ -163,7 +163,7 @@ type Queries struct {
 	getAccountStmt     *sql.Stmt
 	getEntryStmt       *sql.Stmt
 	getTransferStmt    *sql.Stmt
-	listAccountStmt    *sql.Stmt
+	listAccountsStmt   *sql.Stmt
 	listEntriesStmt    *sql.Stmt
 	listTransfersStmt  *sql.Stmt
 	updateAccountStmt  *sql.Stmt
@@ -180,7 +180,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		getAccountStmt:     q.getAccountStmt,
 		getEntryStmt:       q.getEntryStmt,
 		getTransferStmt:    q.getTransferStmt,
-		listAccountStmt:    q.listAccountStmt,
+		listAccountsStmt:   q.listAccountsStmt,
 		listEntriesStmt:    q.listEntriesStmt,
 		listTransfersStmt:  q.listTransfersStmt,
 		updateAccountStmt:  q.updateAccountStmt,

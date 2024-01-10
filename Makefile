@@ -8,9 +8,8 @@ migrateup:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/s1mple_bank?sslmode=disable" -verbose up
 migratedown:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/s1mple_bank?sslmode=disable" -verbose down
-sqlcinit:
-	docker run --rm -v E:\Study\Gaulang\a-s1mple-bank:/src -w /src sqlc/sqlc init
 sqlc:
 	docker run --rm -v E:\Study\Gaulang\a-s1mple-bank:/src -w /src sqlc/sqlc generate
-
-.PHONY: postgres createdb dropdb migrateup migratedown sqlcinit  sqlc
+test:
+	go test -v -cover ./...
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test

@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgret:
-        image: postgret
+      postgres:
+        image: postgres:16
         env:
-          POSTGRET_USER: root
-          POSTGRET_PASSWORD: secret
-          POSTGRET_DB: s1mple_bank
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: s1mple_bank
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -34,6 +34,11 @@ jobs:
         with:
           go-version: '1.21'
 
+      - name: Install golang-migrate
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.0/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate /usr/bin/
+          which migrate
       - name: Run migrations
         run: make migrateup
 

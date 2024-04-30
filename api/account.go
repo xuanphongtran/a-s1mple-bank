@@ -23,10 +23,11 @@ func (server *Server) createAccount(ctx *gin.Context) {
 	}
 
 	authPayload := ctx.MustGet(authorizatinPayloadKey).(*token.Payload)
+
 	arg := db.CreateAccountParams{
 		Owner:    authPayload.Username,
-		Balance:  0,
 		Currency: req.Currency,
+		Balance:  0,
 	}
 
 	account, err := server.store.CreateAccount(ctx, arg)
